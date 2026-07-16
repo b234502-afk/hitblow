@@ -14,24 +14,33 @@ def play(digits=3):
     print(f"Hit & Blow（{digits} 桁・重複なし）")
 
     # ===== ① 開始時に足す（難易度・あいさつ など）: ここに書く =====
+    print("-" * 40)
+    print("【ゲーム説明】")
+    print(f"相手が隠した {digits} 桁の重複のない数字を当てるゲームです。")
+    print("・Hit  : 数字も位置も合っている数")
+    print("・Blow : 数字は合っているが、位置が違う数")
+    print("ヒントを頼りに、できるだけ少ない回数で正解を見つけてください！")
+    print("-" * 40)
 
     tries = 0
     while True:
         guess = input("予想 > ").strip()
 
         # ===== ② 入力コマンドに足す（ヒント など）: ここに書く（import もここに） =====
-        # 例:  from .hint import hint
-        #      if guess == "h":
-        #          print(hint(secret)); continue
+        # 例:   from .hint import hint
+        #       if guess == "h":
+        #           print(hint(secret)); continue
 
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してね")
+            print("-" * 40)  # 区切りが見やすくなるよう追加
             continue
         tries += 1
         hit, blow = judge(secret, guess)
         print(f"  Hit={hit}  Blow={blow}")
-        if hit == digits:
+        print("-" * 40)  # 区切りが見やすくなるよう追加
 
+        if hit == digits:
             # ===== ③ 勝利時に足す（スコア・履歴 など）: ここに書く =====
 
             print(f"正解！ {tries} 回で当たり（答え {secret}）")
