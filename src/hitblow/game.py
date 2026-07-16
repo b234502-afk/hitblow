@@ -6,7 +6,7 @@
    import も自分の場所の近くに書くこと（ファイル先頭にまとめない＝衝突回避）。
 """
 from .core import judge, make_secret
-
+from .color import format_colored_guess
 
 def play(digits=3):
     secret = make_secret(digits)
@@ -35,7 +35,6 @@ def play(digits=3):
         hit, blow = judge(secret, guess)
         
         # --- カラー機能の追加ここから ---
-        from .color import format_colored_guess
         colored_guess = format_colored_guess(secret, guess)
         print(f"結果: {colored_guess}  (Hit={hit}  Blow={blow})")
         # --- カラー機能の追加ここまで ---
