@@ -1,19 +1,21 @@
-"""ゲームの進行（入力・表示・ループ）。
+"""ゲームの進行（入力・表示・ループ）。"""
 
-★ チームで足す機能は **自分の担当の場所**に書く（1機能=1ファイル）。
-   下の「ここに足す」場所は3か所（① 開始時 ② 入力コマンド ③ 勝利時）。
-   ペアごとに**別の場所**を直すので、並行作業でも衝突しない。
-   import も自分の場所の近くに書くこと（ファイル先頭にまとめない＝衝突回避）。
-"""
-from .core import judge
 from .color import format_colored_guess
-from .level import make_secret_with_mode, select_duplicate_mode
+from .core import judge
+from .level import (
+    make_secret_with_mode,
+    select_digits,
+    select_duplicate_mode,
+)
+
 
 def play(digits=3):
     # ===== ① 開始時に足す（難易度・あいさつ など）: ここに書く =====
-    
 
     allow_duplicates = select_duplicate_mode()
+    # プレイヤーに桁数を選択させる（引数の digits をデフォルト値として渡す）
+    digits = select_digits(allow_duplicates, default_digits=digits)
+
     secret = make_secret_with_mode(digits, allow_duplicates)
 
     mode_str = "重複あり" if allow_duplicates else "重複なし"
@@ -39,9 +41,9 @@ def play(digits=3):
             print("-" * 40)
             continue
 
-        # 重複なしモードの時に重複入力された場合の簡易バリデーション (お好みで追加)
+        # 重複なしモードの時に重複入力された場合の簡易バリデーション
         if not allow_duplicates and len(set(guess)) != digits:
-            print(f"※重複なしモードです！同じ数字を2回使えません。")
+            print("※重複なしモードです！同じ数字を2回使えません。")
             print("-" * 40)
             continue
 
