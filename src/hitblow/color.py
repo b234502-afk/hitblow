@@ -2,29 +2,35 @@
 
 入力された予想数字（guess）の各桁に、Hit（緑）/ Blow（黄）の色をつけます。
 """
+
 GREEN = "\033[32m"
 YELLOW = "\033[33m"
 RESET = "\033[0m"
 
 
 def format_colored_guess(secret: str, guess: str) -> str:
-    """ユーザーの予想数字(guess)を判定し、色付きの文字列にして返します。
-    
-    - 位置も数字も合っている桁 (Hit) -> 緑色
-    - 位置は違うが数字は含まれる桁 (Blow) -> 黄色
-    - どちらでもない桁 -> そのまま
-    """
-    colored_digits = []
-    
-    for i, char in enumerate(guess):
-        if char == secret[i]:
-            # Hit (位置も数字も一致) -> 緑色
-            colored_digits.append(f"{GREEN}{char}{RESET}")
-        elif char in secret:
-            # Blow (数字は含まれるが位置が違う) -> 黄色
-            colored_digits.append(f"{YELLOW}{char}{RESET}")
+    result = [""] * len(guess)
+
+    # リスト化（使用済み管理のため）
+    secret_list = list(secret)
+    guess_list = list(guess)
+
+    # まず Hit を判定
+    for i in range(len(guess)):
+        if guess_list[i] == secret_list[i]:
+            result[i] = f"{GREEN}{guess_list[i]}{RESET}"
+            secret_list[i] = None
+            guess_list[i] = None
+
+    # 次に Blow を判定
+    for i in range(len(guess)):
+        if guess_list[i] is None:
+            continue
+
+        if guess_list[i] in secret_list:
+            result[i] = f"{YELLOW}{guess_list[i]}{RESET}"
+            secret_list[secret_list.index(guess_list[i])] = None
         else:
-            # はずれ -> そのまま
-            colored_digits.append(char)
-            
-    return "".join(colored_digits)
+            result[i] = guess_list[i]
+
+    return "".join(result)
